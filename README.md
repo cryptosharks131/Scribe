@@ -44,7 +44,7 @@ scribe-cli getinfo
 scribe-cli masternode status
 scribe-cli mnsync status
 ```
-Also, if you want to check/start/stop **Polis** , run one of the following commands as **root**:
+Also, if you want to check/start/stop **Scribe** , run one of the following commands as **root**:
 ```
 systemctl status Scribe #To check the service is running.
 systemctl start Scribe #To start Scribe service.
