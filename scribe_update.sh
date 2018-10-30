@@ -2,13 +2,13 @@
 
 TMP_FOLDER=$(mktemp -d)
 TMP_BS=$(mktemp -d)
-CONFIGFOLDER='/root/.poliscore'
-COIN_DAEMON='/usr/local/bin/polisd'
-COIN_CLI='/usr/local/bin/polis-cli'
-COIN_REPO='https://github.com/polispay/polis/releases/download/v1.4.4/poliscore-1.4.4-x86_64-linux-gnu.tar.gz'
-SENTINEL_REPO='https://github.com/polispay/sentinel.git'
-COIN_NAME='Polis'
-COIN_BS='http://wbs.cryptosharkspool.com/polis/bootstrap.tar.gz'
+CONFIGFOLDER='/root/.scribecore'
+COIN_DAEMON='/usr/local/bin/scribed'
+COIN_CLI='/usr/local/bin/scribe-cli'
+COIN_REPO=''
+SENTINEL_REPO='https://github.com/scribenetwork/sentinel.git'
+COIN_NAME='Scribe'
+#COIN_BS='http://wbs.cryptosharkspool.com/scribe/bootstrap.tar.gz'
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -23,20 +23,20 @@ function update_sentinel() {
 
 function update_node() {
   echo -e "Preparing to download updated $COIN_NAME"
-  rm /usr/local/bin/polis*
+  rm /usr/local/bin/scribe*
   cd $TMP_FOLDER
   wget -q $COIN_REPO
   compile_error
   COIN_ZIP=$(echo $COIN_REPO | awk -F'/' '{print $NF}')
   tar xvf $COIN_ZIP --strip 1 >/dev/null 2>&1
   compile_error
-  cp bin/polis{d,-cli} /usr/local/bin
+  cp bin/scribe{d,-cli} /usr/local/bin
   compile_error
   strip $COIN_DAEMON $COIN_CLI
   cd - >/dev/null 2>&1
   rm -rf $TMP_FOLDER >/dev/null 2>&1
-  chmod +x /usr/local/bin/polisd
-  chmod +x /usr/local/bin/polis-cli
+  chmod +x $COIN_DAEMON
+  chmod +x $COIN_CLI
   clear
 }
 
@@ -122,6 +122,6 @@ clear
 checks
 prepare_system
 update_node
-import_bootstrap
+#import_bootstrap
 update_sentinel
 important_information
