@@ -9,7 +9,7 @@ COIN_CLI='/usr/local/bin/scribe-cli'
 COIN_REPO='https://github.com/cryptosharks131/Scribe/releases/download/v0.2/scribe.tar.gz'
 SENTINEL_REPO='https://github.com/scribenetwork/sentinel.git'
 COIN_NAME='Scribe'
-COIN_PORT=24126
+COIN_PORT=8800
 #COIN_BS='http://wbs.cryptosharkspool.com/scribe/bootstrap.tar.gz'
 
 
