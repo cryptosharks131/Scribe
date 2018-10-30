@@ -2,15 +2,15 @@
 
 TMP_FOLDER=$(mktemp -d)
 TMP_BS=$(mktemp -d)
-CONFIG_FILE='polis.conf'
-CONFIGFOLDER='/root/.poliscore'
-COIN_DAEMON='/usr/local/bin/polisd'
-COIN_CLI='/usr/local/bin/polis-cli'
-COIN_REPO='https://github.com/polispay/polis/releases/download/v1.4.4/poliscore-1.4.4-x86_64-linux-gnu.tar.gz'
-SENTINEL_REPO='https://github.com/polispay/sentinel.git'
-COIN_NAME='Polis'
+CONFIG_FILE='scribe.conf'
+CONFIGFOLDER='/root/.scribecore'
+COIN_DAEMON='/usr/local/bin/scribed'
+COIN_CLI='/usr/local/bin/scribe-cli'
+COIN_REPO=''
+SENTINEL_REPO='https://github.com/scribenetwork/sentinel.git'
+COIN_NAME='Scribe'
 COIN_PORT=24126
-COIN_BS='http://wbs.cryptosharkspool.com/polis/bootstrap.tar.gz'
+#COIN_BS='http://wbs.cryptosharkspool.com/scribe/bootstrap.tar.gz'
 
 
 NODEIP=$(curl -s4 icanhazip.com)
@@ -24,11 +24,11 @@ NC='\033[0m'
 function install_sentinel() {
   echo -e "${GREEN}Install sentinel.${NC}"
   apt-get -y install python-virtualenv virtualenv >/dev/null 2>&1
-  git clone $SENTINEL_REPO /sentinel >/dev/null 2>&1
-  cd /sentinel
+  git clone $SENTINEL_REPO /root/sentinel >/dev/null 2>&1
+  cd /root/sentinel
   virtualenv ./venv >/dev/null 2>&1
   ./venv/bin/pip install -r requirements.txt >/dev/null 2>&1
-  echo  "* * * * * cd /sentinel && ./venv/bin/python bin/sentinel.py >> $CONFIGFOLDER/sentinel.log 2>&1" > $CONFIGFOLDER/$COIN_NAME.cron
+  echo  "* * * * * cd /root/sentinel && ./venv/bin/python bin/sentinel.py >> $CONFIGFOLDER/sentinel.log 2>&1" > $CONFIGFOLDER/$COIN_NAME.cron
   crontab $CONFIGFOLDER/$COIN_NAME.cron
   rm $CONFIGFOLDER/$COIN_NAME.cron >/dev/null 2>&1
   cd -
@@ -43,13 +43,13 @@ function compile_node() {
   COIN_ZIP=$(echo $COIN_REPO | awk -F'/' '{print $NF}')
   tar xvf $COIN_ZIP --strip 1 >/dev/null 2>&1
   compile_error
-  cp bin/polis{d,-cli} /usr/local/bin
+  cp bin/scribe{d,-cli} /usr/local/bin
   compile_error
   strip $COIN_DAEMON $COIN_CLI
   cd - >/dev/null 2>&1
   rm -rf $TMP_FOLDER >/dev/null 2>&1
-  chmod +x /usr/local/bin/polisd
-  chmod +x /usr/local/bin/polis-cli
+  chmod +x $COIN_DAEMON
+  chmod +x $COIN_CLI
   clear
 }
 
@@ -133,31 +133,12 @@ clear
 }
 
 function update_config() {
-  sed -i 's/daemon=1/daemon=0/' $CONFIGFOLDER/$CONFIG_FILE
   cat << EOF >> $CONFIGFOLDER/$CONFIG_FILE
 logintimestamps=1
 maxconnections=256
-#bind=$NODEIP
 masternode=1
 externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
-addnode=polispay.org
-addnode=node1.polispay.org
-addnode=node2.polispay.org
-addnode=insight.polispay.org
-addnode=insight2.polispay.org
-addnode=explorer.polispay.org
-addnode=199.247.2.29:24126
-addnode=46.101.32.72:24126
-addnode=144.202.19.190:24126
-addnode=207.148.5.135:24126
-addnode=89.47.165.165:24126
-addnode=62.75.139.140:24126
-addnode=207.148.5.135:24126
-addnode=209.250.245.66:24126
-addnode=199.247.3.98:24126
-addnode=199.247.29.65:24126
-addnode=45.32.149.254:24126
 EOF
 }
 
