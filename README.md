@@ -1,6 +1,6 @@
 # Scribe
 Shell script to install a [Scribe Masternode](http://scribe.network/) on a Linux server running Ubuntu 16.04.  
-This will require a VPS, I use [Vultr](https://www.vultr.com/?ref=7622400).  The $5/mo server size will suffice.  
+This will require a VPS, I use [Vultr](https://www.vultr.com/?ref=7310394).  The $5/mo server size will suffice.  
 This script will install **Scribe v0.2**.
 ***
 
